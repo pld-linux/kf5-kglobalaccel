@@ -1,15 +1,15 @@
-%define		kdeframever	5.10
+%define		kdeframever	5.13
 %define		qtver		5.3.2
 %define		kfname		kglobalaccel
 
 Summary:	Global desktop keyboard shortcuts
 Name:		kf5-%{kfname}
-Version:	5.10.0
+Version:	5.13.0
 Release:	1
 License:	LGPL v2.1+
 Group:		X11/Libraries
 Source0:	http://download.kde.org/stable/frameworks/%{kdeframever}/%{kfname}-%{version}.tar.xz
-# Source0-md5:	1ac01be1b53df4227c2add80a0498407
+# Source0-md5:	801fae7833b5dcc4dc7f24ea0c9ad534
 URL:		http://www.kde.org/
 BuildRequires:	Qt5Core-devel >= %{qtver}
 BuildRequires:	Qt5DBus-devel >= %{qtver}
@@ -76,10 +76,14 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/kglobalaccel5
 %attr(755,root,root) %ghost %{_libdir}/libKF5GlobalAccel.so.5
 %attr(755,root,root) %{_libdir}/libKF5GlobalAccel.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libKF5GlobalAccelPrivate.so.5
+%attr(755,root,root) %{_libdir}/libKF5GlobalAccelPrivate.so.*.*
 %{_datadir}/dbus-1/interfaces/kf5_org.kde.KGlobalAccel.xml
 %{_datadir}/dbus-1/interfaces/kf5_org.kde.kglobalaccel.Component.xml
 %{_datadir}/dbus-1/services/org.kde.kglobalaccel.service
 %{_datadir}/kservices5/kglobalaccel5.desktop
+%dir %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms
+%attr(755,root,root) %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms/KF5GlobalAccelPrivateXcb.so
 
 %files devel
 %defattr(644,root,root,755)
@@ -87,4 +91,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/KF5/kglobalaccel_version.h
 %{_libdir}/cmake/KF5GlobalAccel
 %attr(755,root,root) %{_libdir}/libKF5GlobalAccel.so
+%attr(755,root,root) %{_libdir}/libKF5GlobalAccelPrivate.so
 %{qt5dir}/mkspecs/modules/qt_KGlobalAccel.pri
