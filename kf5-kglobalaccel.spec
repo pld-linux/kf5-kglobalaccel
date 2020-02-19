@@ -19,7 +19,7 @@ BuildRequires:	Qt5Widgets-devel >= %{qtver}
 BuildRequires:	Qt5X11Extras-devel >= %{qtver}
 BuildRequires:	Qt5Xml-devel >= %{qtver}
 BuildRequires:	cmake >= 2.8.12
-BuildRequires:	kf5-extra-cmake-modules >= 1.0.0
+BuildRequires:	kf5-extra-cmake-modules >= %{version}
 BuildRequires:	kf5-kcrash-devel >= %{version}
 BuildRequires:	ninja
 BuildRequires:	qt5-linguist >= %{qtver}
