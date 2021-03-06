@@ -1,15 +1,15 @@
-%define		kdeframever	5.67
+%define		kdeframever	5.79
 %define		qtver		5.9.0
 %define		kfname		kglobalaccel
 
 Summary:	Global desktop keyboard shortcuts
 Name:		kf5-%{kfname}
-Version:	5.67.0
+Version:	5.79.0
 Release:	1
 License:	LGPL v2.1+
 Group:		X11/Libraries
 Source0:	http://download.kde.org/stable/frameworks/%{kdeframever}/%{kfname}-%{version}.tar.xz
-# Source0-md5:	b688a1639bc9497fb3787f9d93950bda
+# Source0-md5:	6e5217c6621e97fe90e99385720f968d
 URL:		http://www.kde.org/
 BuildRequires:	Qt5Core-devel >= %{qtver}
 BuildRequires:	Qt5DBus-devel >= %{qtver}
@@ -86,6 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms
 %attr(755,root,root) %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms/KF5GlobalAccelPrivateXcb.so
 %{_datadir}/qlogging-categories5/kglobalaccel.categories
+%{systemduserunitdir}/plasma-kglobalaccel.service
+%{_datadir}/qlogging-categories5/kglobalaccel.renamecategories
 
 %files devel
 %defattr(644,root,root,755)
