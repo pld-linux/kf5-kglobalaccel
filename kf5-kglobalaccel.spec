@@ -1,18 +1,18 @@
 #
 # Conditional build:
 %bcond_with	tests		# build with tests
-%define		kdeframever	5.106
+%define		kdeframever	5.107
 %define		qtver		5.15.2
 %define		kfname		kglobalaccel
 
 Summary:	Global desktop keyboard shortcuts
 Name:		kf5-%{kfname}
-Version:	5.106.0
+Version:	5.107.0
 Release:	1
 License:	LGPL v2.1+
 Group:		X11/Libraries
 Source0:	https://download.kde.org/stable/frameworks/%{kdeframever}/%{kfname}-%{version}.tar.xz
-# Source0-md5:	8c2dbab0024e9c17c0d9c3220938190d
+# Source0-md5:	a2b15033f0b21d3603f69ef358c73ba6
 URL:		http://www.kde.org/
 BuildRequires:	Qt5Core-devel >= %{qtver}
 BuildRequires:	Qt5DBus-devel >= %{qtver}
