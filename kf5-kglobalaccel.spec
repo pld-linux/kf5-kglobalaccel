@@ -1,24 +1,23 @@
 #
 # Conditional build:
 %bcond_with	tests		# build with tests
-%define		kdeframever	5.114
+%define		kdeframever	5.249.0
 %define		qtver		5.15.2
 %define		kfname		kglobalaccel
 
 Summary:	Global desktop keyboard shortcuts
 Name:		kf5-%{kfname}
-Version:	5.114.0
-Release:	1
+Version:	5.249.0
+Release:	0.1
 License:	LGPL v2.1+
 Group:		X11/Libraries
-Source0:	https://download.kde.org/stable/frameworks/%{kdeframever}/%{kfname}-%{version}.tar.xz
-# Source0-md5:	d4b9194beb2d0f67a150354636a7d778
+Source0:	https://download.kde.org/unstable/frameworks/%{kdeframever}/%{kfname}-%{version}.tar.xz
+# Source0-md5:	782f309bcc38627d8e32be1430914685
 URL:		http://www.kde.org/
-BuildRequires:	Qt5Core-devel >= %{qtver}
-BuildRequires:	Qt5DBus-devel >= %{qtver}
-BuildRequires:	Qt5Test-devel >= %{qtver}
-BuildRequires:	Qt5Widgets-devel >= %{qtver}
-BuildRequires:	Qt5X11Extras-devel >= %{qtver}
+BuildRequires:	Qt6Core-devel >= %{qtver}
+BuildRequires:	Qt6DBus-devel >= %{qtver}
+BuildRequires:	Qt6Test-devel >= %{qtver}
+BuildRequires:	Qt6Widgets-devel >= %{qtver}
 BuildRequires:	cmake >= 3.16
 BuildRequires:	kf5-extra-cmake-modules >= %{version}
 BuildRequires:	kf5-kconfig-devel >= %{version}
@@ -34,9 +33,8 @@ BuildRequires:	tar >= 1:1.22
 BuildRequires:	xcb-util-keysyms-devel
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xz
-Requires:	Qt5DBus >= %{qtver}
-Requires:	Qt5Widgets >= %{qtver}
-Requires:	Qt5X11Extras >= %{qtver}
+Requires:	Qt6DBus >= %{qtver}
+Requires:	Qt6Widgets >= %{qtver}
 Requires:	kf5-dirs
 Requires:	kf5-kconfig >= %{version}
 Requires:	kf5-kcoreaddons >= %{version}
@@ -45,7 +43,7 @@ Requires:	kf5-kdbusaddons >= %{version}
 Requires:	kf5-kwindowsystem >= %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		qt5dir		%{_libdir}/qt5
+%define		qt6dir		%{_libdir}/qt6
 
 %description
 KGlobalAccel allows you to have global accelerators that are
@@ -57,8 +55,8 @@ Summary:	Header files for %{kfname} development
 Summary(pl.UTF-8):	Pliki nagłówkowe dla programistów używających %{kfname}
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	Qt5DBus-devel >= %{qtver}
-Requires:	Qt5Widgets-devel >= %{qtver}
+Requires:	Qt6DBus-devel >= %{qtver}
+Requires:	Qt6Widgets-devel >= %{qtver}
 Requires:	cmake >= 3.16
 
 %description devel
@@ -87,7 +85,7 @@ Pliki nagłówkowe dla programistów używających %{kfname}.
 rm -rf $RPM_BUILD_ROOT
 %ninja_install -C build
 
-%find_lang %{kfname}5_qt --with-qm --all-name --with-kde
+%find_lang %{kfname}6_qt --with-qm --all-name --with-kde
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -95,27 +93,18 @@ rm -rf $RPM_BUILD_ROOT
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
-%files -f %{kfname}5_qt.lang
+%files -f %{kfname}6_qt.lang
 %defattr(644,root,root,755)
 %doc README.md
-%attr(755,root,root) %{_bindir}/kglobalaccel5
-%ghost %{_libdir}/libKF5GlobalAccel.so.5
-%attr(755,root,root) %{_libdir}/libKF5GlobalAccel.so.*.*
-%ghost %{_libdir}/libKF5GlobalAccelPrivate.so.5
-%attr(755,root,root) %{_libdir}/libKF5GlobalAccelPrivate.so.*.*
-%{_datadir}/dbus-1/interfaces/kf5_org.kde.KGlobalAccel.xml
-%{_datadir}/dbus-1/interfaces/kf5_org.kde.kglobalaccel.Component.xml
-%{_datadir}/dbus-1/services/org.kde.kglobalaccel.service
-%{_datadir}/kservices5/kglobalaccel5.desktop
-%dir %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms
-%attr(755,root,root) %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms/KF5GlobalAccelPrivateXcb.so
-%{_datadir}/qlogging-categories5/kglobalaccel.categories
-%{systemduserunitdir}/plasma-kglobalaccel.service
-%{_datadir}/qlogging-categories5/kglobalaccel.renamecategories
+%attr(755,root,root) %{_libdir}/libKF6GlobalAccel.so.*.*.*
+%ghost %{_libdir}/libKF6GlobalAccel.so.6
+%{_datadir}/dbus-1/interfaces/kf6_org.kde.KGlobalAccel.xml
+%{_datadir}/dbus-1/interfaces/kf6_org.kde.kglobalaccel.Component.xml
+%{_datadir}/qlogging-categories6/kglobalaccel.categories
+%{_datadir}/qlogging-categories6/kglobalaccel.renamecategories
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/KF5/KGlobalAccel
-%{_libdir}/cmake/KF5GlobalAccel
-%{_libdir}/libKF5GlobalAccel.so
-%{qt5dir}/mkspecs/modules/qt_KGlobalAccel.pri
+%{_includedir}/KF6/KGlobalAccel
+%{_libdir}/cmake/KF6GlobalAccel
+%{_libdir}/libKF6GlobalAccel.so
