@@ -3,7 +3,8 @@
 %bcond_with	tests		# test suite
 
 %define		kdeframever	5.116
-%define		qtver		5.15.2
+%define		qt_ver		5.15.2
+%define		kf_ver		%{version}
 %define		kfname		kglobalaccel
 
 Summary:	Global desktop keyboard shortcuts
@@ -16,18 +17,18 @@ Group:		X11/Libraries
 Source0:	https://download.kde.org/stable/frameworks/%{kdeframever}/%{kfname}-%{version}.tar.xz
 # Source0-md5:	6ce31a55aed1a20c18710c125efceca8
 URL:		https://kde.org/
-BuildRequires:	Qt5Core-devel >= %{qtver}
-BuildRequires:	Qt5DBus-devel >= %{qtver}
-BuildRequires:	Qt5Test-devel >= %{qtver}
-BuildRequires:	Qt5Widgets-devel >= %{qtver}
-BuildRequires:	Qt5X11Extras-devel >= %{qtver}
+BuildRequires:	Qt5Core-devel >= %{qt_ver}
+BuildRequires:	Qt5DBus-devel >= %{qt_ver}
+%{?with_tests:BuildRequires:	Qt5Test-devel >= %{qt_ver}}
+BuildRequires:	Qt5Widgets-devel >= %{qt_ver}
+BuildRequires:	Qt5X11Extras-devel >= %{qt_ver}
 BuildRequires:	cmake >= 3.16
-BuildRequires:	kf5-extra-cmake-modules >= %{version}
-BuildRequires:	kf5-kconfig-devel >= %{version}
-BuildRequires:	kf5-kcoreaddons-devel >= %{version}
-BuildRequires:	kf5-kcrash-devel >= %{version}
-BuildRequires:	kf5-kdbusaddons-devel >= %{version}
-BuildRequires:	kf5-kwindowsystem-devel >= %{version}
+BuildRequires:	kf5-extra-cmake-modules >= %{kf_ver}
+BuildRequires:	kf5-kconfig-devel >= %{kf_ver}
+BuildRequires:	kf5-kcoreaddons-devel >= %{kf_ver}
+BuildRequires:	kf5-kcrash-devel >= %{kf_ver}
+BuildRequires:	kf5-kdbusaddons-devel >= %{kf_ver}
+BuildRequires:	kf5-kwindowsystem-devel >= %{kf_ver}
 BuildRequires:	libxcb-devel
 BuildRequires:	ninja
 BuildRequires:	qt5-linguist >= %{qtver}
@@ -36,15 +37,16 @@ BuildRequires:	tar >= 1:1.22
 BuildRequires:	xcb-util-keysyms-devel
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xz
-Requires:	Qt5DBus >= %{qtver}
-Requires:	Qt5Widgets >= %{qtver}
-Requires:	Qt5X11Extras >= %{qtver}
+Requires:	Qt5Core >= %{qt_ver}
+Requires:	Qt5DBus >= %{qt_ver}
+Requires:	Qt5Widgets >= %{qt_ver}
+Requires:	Qt5X11Extras >= %{qt_ver}
 Requires:	kf5-dirs
-Requires:	kf5-kconfig >= %{version}
-Requires:	kf5-kcoreaddons >= %{version}
-Requires:	kf5-kcrash >= %{version}
-Requires:	kf5-kdbusaddons >= %{version}
-Requires:	kf5-kwindowsystem >= %{version}
+Requires:	kf5-kconfig >= %{kf_ver}
+Requires:	kf5-kcoreaddons >= %{kf_ver}
+Requires:	kf5-kcrash >= %{kf_ver}
+Requires:	kf5-kdbusaddons >= %{kf_ver}
+Requires:	kf5-kwindowsystem >= %{kf_ver}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		qt5dir		%{_libdir}/qt5
@@ -64,7 +66,8 @@ Summary:	Header files for %{kfname} development
 Summary(pl.UTF-8):	Pliki nagłówkowe dla programistów używających %{kfname}
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	Qt5DBus-devel >= %{qtver}
+Requires:	Qt5Core-devel >= %{qt_ver}
+Requires:	Qt5DBus-devel >= %{qt_ver}
 Requires:	Qt5Widgets-devel >= %{qtver}
 Requires:	cmake >= 3.16
 
@@ -89,9 +92,9 @@ Pliki nagłówkowe dla programistów używających %{kfname}.
 %ninja_build -C build test
 %endif
 
-
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %ninja_install -C build
 
 %find_lang %{kfname}5_qt --with-qm --all-name --with-kde
@@ -99,8 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files -f %{kfname}5_qt.lang
 %defattr(644,root,root,755)
@@ -110,19 +113,19 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libKF5GlobalAccel.so.*.*
 %ghost %{_libdir}/libKF5GlobalAccelPrivate.so.5
 %attr(755,root,root) %{_libdir}/libKF5GlobalAccelPrivate.so.*.*
+%dir %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms
+%attr(755,root,root) %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms/KF5GlobalAccelPrivateXcb.so
 %{_datadir}/dbus-1/interfaces/kf5_org.kde.KGlobalAccel.xml
 %{_datadir}/dbus-1/interfaces/kf5_org.kde.kglobalaccel.Component.xml
 %{_datadir}/dbus-1/services/org.kde.kglobalaccel.service
 %{_datadir}/kservices5/kglobalaccel5.desktop
-%dir %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms
-%attr(755,root,root) %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms/KF5GlobalAccelPrivateXcb.so
 %{_datadir}/qlogging-categories5/kglobalaccel.categories
-%{systemduserunitdir}/plasma-kglobalaccel.service
 %{_datadir}/qlogging-categories5/kglobalaccel.renamecategories
+%{systemduserunitdir}/plasma-kglobalaccel.service
 
 %files devel
 %defattr(644,root,root,755)
+%{_libdir}/libKF5GlobalAccel.so
 %{_includedir}/KF5/KGlobalAccel
 %{_libdir}/cmake/KF5GlobalAccel
-%{_libdir}/libKF5GlobalAccel.so
 %{qt5dir}/mkspecs/modules/qt_KGlobalAccel.pri
