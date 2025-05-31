@@ -1,11 +1,13 @@
 #
 # Conditional build:
-%bcond_with	tests		# build with tests
+%bcond_with	tests		# test suite
+
 %define		kdeframever	5.116
 %define		qtver		5.15.2
 %define		kfname		kglobalaccel
 
 Summary:	Global desktop keyboard shortcuts
+Summary(pl.UTF-8):	Skróty klawiaturowe globalne dla pulpitu
 Name:		kf5-%{kfname}
 Version:	5.116.0
 Release:	1
@@ -13,7 +15,7 @@ License:	LGPL v2.1+
 Group:		X11/Libraries
 Source0:	https://download.kde.org/stable/frameworks/%{kdeframever}/%{kfname}-%{version}.tar.xz
 # Source0-md5:	6ce31a55aed1a20c18710c125efceca8
-URL:		http://www.kde.org/
+URL:		https://kde.org/
 BuildRequires:	Qt5Core-devel >= %{qtver}
 BuildRequires:	Qt5DBus-devel >= %{qtver}
 BuildRequires:	Qt5Test-devel >= %{qtver}
@@ -51,6 +53,11 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 KGlobalAccel allows you to have global accelerators that are
 independent of the focused window. Unlike regular shortcuts, the
 application's window does not need focus for them to be activated.
+
+%description -l pl.UTF-8
+KGlobalAccel pozwala tworzyć skróty klawiaturowe niezależne od
+wybranego okna. W przeciwieństwie do zwykłych skrótów, do ich
+zadziałania okno aplikacji nie musi być wybranym.
 
 %package devel
 Summary:	Header files for %{kfname} development
