@@ -37,6 +37,8 @@ BuildRequires:	tar >= 1:1.22
 BuildRequires:	xcb-util-keysyms-devel
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xz
+# allow using also kp6-kglobalacceld service (for parallel install of kf5-kglobalacel and kp6-kglobalacceld)
+Requires:	%{name}-service >= %{version}-%{release}
 Requires:	Qt5Core >= %{qt_ver}
 Requires:	Qt5DBus >= %{qt_ver}
 Requires:	Qt5Widgets >= %{qt_ver}
@@ -44,8 +46,6 @@ Requires:	Qt5X11Extras >= %{qt_ver}
 Requires:	kf5-dirs
 Requires:	kf5-kconfig >= %{kf_ver}
 Requires:	kf5-kcoreaddons >= %{kf_ver}
-Requires:	kf5-kcrash >= %{kf_ver}
-Requires:	kf5-kdbusaddons >= %{kf_ver}
 Requires:	kf5-kwindowsystem >= %{kf_ver}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -60,6 +60,21 @@ application's window does not need focus for them to be activated.
 KGlobalAccel pozwala tworzyć skróty klawiaturowe niezależne od
 wybranego okna. W przeciwieństwie do zwykłych skrótów, do ich
 zadziałania okno aplikacji nie musi być wybranym.
+
+%package service
+Summary:	KDED global shortcuts server
+Summary(pl.UTF-8):	Globalny serwer skrótów KDED
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+Requires:	kf5-kcrash >= %{kf_ver}
+Requires:	kf5-kdbusaddons >= %{kf_ver}
+Conflicts:	kp6-kglobalacceld
+
+%description service
+KDED global shortcuts server.
+
+%description service -l pl.UTF-8
+Globalny serwer skrótów KDED.
 
 %package devel
 Summary:	Header files for %{kfname} development
@@ -108,19 +123,22 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{kfname}5_qt.lang
 %defattr(644,root,root,755)
 %doc README.md
-%attr(755,root,root) %{_bindir}/kglobalaccel5
-%ghost %{_libdir}/libKF5GlobalAccel.so.5
 %attr(755,root,root) %{_libdir}/libKF5GlobalAccel.so.*.*
-%ghost %{_libdir}/libKF5GlobalAccelPrivate.so.5
+%ghost %{_libdir}/libKF5GlobalAccel.so.5
 %attr(755,root,root) %{_libdir}/libKF5GlobalAccelPrivate.so.*.*
-%dir %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms
-%attr(755,root,root) %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms/KF5GlobalAccelPrivateXcb.so
+%ghost %{_libdir}/libKF5GlobalAccelPrivate.so.5
 %{_datadir}/dbus-1/interfaces/kf5_org.kde.KGlobalAccel.xml
 %{_datadir}/dbus-1/interfaces/kf5_org.kde.kglobalaccel.Component.xml
-%{_datadir}/dbus-1/services/org.kde.kglobalaccel.service
-%{_datadir}/kservices5/kglobalaccel5.desktop
 %{_datadir}/qlogging-categories5/kglobalaccel.categories
 %{_datadir}/qlogging-categories5/kglobalaccel.renamecategories
+
+%files service
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/kglobalaccel5
+%dir %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms
+%attr(755,root,root) %{_libdir}/qt5/plugins/org.kde.kglobalaccel5.platforms/KF5GlobalAccelPrivateXcb.so
+%{_datadir}/dbus-1/services/org.kde.kglobalaccel.service
+%{_datadir}/kservices5/kglobalaccel5.desktop
 %{systemduserunitdir}/plasma-kglobalaccel.service
 
 %files devel
